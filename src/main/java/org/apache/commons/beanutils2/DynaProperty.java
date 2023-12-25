@@ -259,14 +259,12 @@ public class DynaProperty implements Serializable {
      * @throws ClassNotFoundException When trying to read an object of class that is not on the classpath
      */
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
         this.type = readAnyClass(in);
 
         if (isMapped() || isIndexed()) {
             this.contentType = readAnyClass(in);
         }
-
-        // read other values
-        in.defaultReadObject();
     }
 
     /**
@@ -331,13 +329,12 @@ public class DynaProperty implements Serializable {
      * @throws IOException if the object can't be written
      */
     private void writeObject(final ObjectOutputStream out) throws IOException {
-        writeAnyClass(this.type, out);
+
+        out.defaultWriteObject();
+        writeAnyClass(this.type,out);
 
         if (isMapped() || isIndexed()) {
             writeAnyClass(this.contentType, out);
         }
-
-        // write out other values
-        out.defaultWriteObject();
     }
 }
